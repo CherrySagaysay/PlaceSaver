@@ -5,9 +5,15 @@ import { usePlaces } from "../context/PlaceContext";
 export default function DetailsScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
-    const { places } = usePlaces();
+    const { places, deletePlace } = usePlaces();
 
     const place = places.find((item) => item.id === id);
+    const handleDelete = () => {
+        if (place) {
+            deletePlace(place.id);
+            router.replace("/");
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -24,6 +30,7 @@ export default function DetailsScreen() {
                 <Text>Place not found.</Text>
             )}
 
+            <Button title="Delete Place" onPress={handleDelete} />
             <Button title="Back to Home" onPress={() => router.replace("/")} />
         </View>
     );
