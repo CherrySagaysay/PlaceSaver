@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { Pressable, View, Text, StyleSheet, FlatList } from "react-native";
 import { usePlaces } from "../context/PlaceContext";
+import { useRouter } from "expo-router";
 
 
 export default function HomeScreen() {
   const { places } = usePlaces();
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -19,11 +21,19 @@ export default function HomeScreen() {
         data={places}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.placeItem}>
+          <Pressable
+            style={styles.placeItem}
+            onPress={() =>
+              router.push({
+                pathname: "/details",
+                params: { id: item.id },
+              })
+            }
+          >
             <Text style={styles.placeName}>{item.name}</Text>
             <Text>{item.address}</Text>
             <Text>{item.category}</Text>
-          </View>
+          </Pressable>
         )}
       />
 
