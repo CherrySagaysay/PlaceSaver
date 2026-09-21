@@ -57,99 +57,88 @@ export default function AddPlaceScreen() {
                 contentContainerStyle={styles.container}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={styles.title}>Add New Place</Text>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Add New Place</Text>
 
-                <Text style={styles.subtitle}>
-                    Save a place you want to remember.
-                </Text>
-
-                <Text style={styles.label}>Place Name</Text>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter place name"
-                    value={name}
-                    onChangeText={setName}
-                />
-
-                <Text style={styles.label}>Address</Text>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter address or location"
-                    value={address}
-                    onChangeText={setAddress}
-                />
-
-                <Text style={styles.label}>Category</Text>
-
-                <Picker
-                    selectedValue={category}
-                    onValueChange={(value) => setCategory(value)}
-                    style={styles.picker}
-                >
-                    {CATEGORIES.map((item) => (
-                        <Picker.Item
-                            key={item}
-                            label={item}
-                            value={item}
-                        />
-                    ))}
-                </Picker>
-
-                <Pressable
-                    style={styles.photoButton}
-                    onPress={pickImage}
-                >
-                    <Text style={styles.photoButtonText}>
-                        Choose Photo
+                    <Text style={styles.subtitle}>
+                        Save a place you want to remember.
                     </Text>
-                </Pressable>
+                </View>
 
-                {image && (
-                    <Pressable
-                        onPress={() => setShowImage(true)}
-                    >
-                        <Image
-                            source={{ uri: image }}
-                            style={styles.previewImage}
-                        />
-                    </Pressable>
-                )}
+                <View style={styles.formCard}>
+                    <Text style={styles.label}>Place Name</Text>
 
-                <Modal
-                    visible={showImage}
-                    transparent
-                    animationType="fade"
-                >
-                    <View style={styles.imageModal}>
-                        <Pressable
-                            style={styles.closeButton}
-                            onPress={() => setShowImage(false)}
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter place name"
+                        placeholderTextColor="#94A3B8"
+                        value={name}
+                        onChangeText={setName}
+                    />
+
+                    <Text style={styles.label}>Address</Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter address or location"
+                        placeholderTextColor="#94A3B8"
+                        value={address}
+                        onChangeText={setAddress}
+                    />
+
+                    <Text style={styles.label}>Category</Text>
+
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={category}
+                            onValueChange={(value) => setCategory(value)}
+                            style={styles.picker}
                         >
-                            <Text style={styles.closeButtonText}>
-                                X
-                            </Text>
-                        </Pressable>
+                            {CATEGORIES.map((item) => (
+                                <Picker.Item
+                                    key={item}
+                                    label={item}
+                                    value={item}
+                                />
+                            ))}
+                        </Picker>
+                    </View>
 
-                        {image && (
+                    <Text style={styles.label}>Photo</Text>
+
+                    <Pressable
+                        style={styles.photoButton}
+                        onPress={pickImage}
+                    >
+                        <Text style={styles.photoButtonText}>
+                            Choose Photo
+                        </Text>
+                    </Pressable>
+
+                    {image && (
+                        <Pressable onPress={() => setShowImage(true)}>
                             <Image
                                 source={{ uri: image }}
-                                style={styles.fullImage}
+                                style={styles.previewImage}
                             />
-                        )}
-                    </View>
-                </Modal>
 
-                <Text style={styles.label}>Notes</Text>
+                            <Text style={styles.previewText}>
+                                Tap the photo to view it
+                            </Text>
+                        </Pressable>
+                    )}
 
-                <TextInput
-                    style={[styles.input, styles.notesInput]}
-                    placeholder="Add some notes about this place..."
-                    value={notes}
-                    onChangeText={setNotes}
-                    multiline
-                />
+                    <Text style={styles.label}>Notes</Text>
+
+                    <TextInput
+                        style={[styles.input, styles.notesInput]}
+                        placeholder="Add some notes about this place..."
+                        placeholderTextColor="#94A3B8"
+                        value={notes}
+                        onChangeText={setNotes}
+                        multiline
+                    />
+                </View>
 
                 <Pressable
                     style={styles.saveButton}
@@ -160,6 +149,28 @@ export default function AddPlaceScreen() {
                     </Text>
                 </Pressable>
             </ScrollView>
+
+            <Modal
+                visible={showImage}
+                transparent
+                animationType="fade"
+            >
+                <View style={styles.imageModal}>
+                    <Pressable
+                        style={styles.closeButton}
+                        onPress={() => setShowImage(false)}
+                    >
+                        <Text style={styles.closeButtonText}>X</Text>
+                    </Pressable>
+
+                    {image && (
+                        <Image
+                            source={{ uri: image }}
+                            style={styles.fullImage}
+                        />
+                    )}
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }
@@ -167,6 +178,7 @@ export default function AddPlaceScreen() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
+        backgroundColor: "#F4F8FC",
     },
 
     container: {
@@ -174,88 +186,120 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
 
+    header: {
+        marginBottom: 18,
+    },
+
     title: {
         fontSize: 28,
         fontWeight: "bold",
-        marginBottom: 8,
+        color: "#1E293B",
+        marginBottom: 6,
     },
 
     subtitle: {
         fontSize: 15,
-        marginBottom: 20,
+        color: "#64748B",
+    },
+
+    formCard: {
+        width: "100%",
+        padding: 18,
+        borderRadius: 16,
+        backgroundColor: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: "#E2E8F0",
     },
 
     label: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: "600",
+        color: "#1E293B",
         marginBottom: 6,
     },
 
     input: {
         width: "100%",
         borderWidth: 1,
+        borderColor: "#E2E8F0",
         borderRadius: 12,
         paddingHorizontal: 15,
         paddingVertical: 12,
-        marginBottom: 15,
+        marginBottom: 16,
         fontSize: 16,
-        backgroundColor: "#fff",
+        backgroundColor: "#F8FAFC",
+        color: "#1E293B",
     },
 
     notesInput: {
         height: 100,
         textAlignVertical: "top",
+        marginBottom: 0,
+    },
+
+    pickerContainer: {
+        width: "100%",
+        borderWidth: 1,
+        borderColor: "#E2E8F0",
+        borderRadius: 12,
+        marginBottom: 16,
+        backgroundColor: "#F8FAFC",
+        overflow: "hidden",
     },
 
     picker: {
-        borderWidth: 1,
-        borderRadius: 12,
-        marginBottom: 18,
-        backgroundColor: "#fff",
+        width: "100%",
     },
 
     photoButton: {
         width: "100%",
-        paddingVertical: 14,
+        paddingVertical: 13,
         borderRadius: 12,
         borderWidth: 1,
-        borderColor: "#2563eb",
+        borderColor: "#2563EB",
+        backgroundColor: "#EFF6FF",
         alignItems: "center",
-        marginBottom: 10,
+        marginBottom: 12,
     },
 
     photoButtonText: {
         fontSize: 16,
         fontWeight: "bold",
-        color: "#2563eb",
+        color: "#2563EB",
     },
 
     previewImage: {
         width: "100%",
         height: 200,
         borderRadius: 12,
-        marginTop: 10,
-        marginBottom: 18,
+        marginBottom: 5,
+    },
+
+    previewText: {
+        fontSize: 13,
+        color: "#64748B",
+        textAlign: "center",
+        marginBottom: 16,
     },
 
     saveButton: {
         width: "100%",
-        paddingVertical: 14,
-        borderRadius: 12,
-        backgroundColor: "#2563eb",
+        paddingVertical: 15,
+        borderRadius: 14,
+        backgroundColor: "#2563EB",
         alignItems: "center",
-        marginTop: 5,
+        marginTop: 16,
     },
 
     saveButtonText: {
-        color: "#fff",
+        color: "#FFFFFF",
         fontSize: 16,
         fontWeight: "bold",
     },
 
     imageModal: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        backgroundColor: "rgba(15, 23, 42, 0.95)",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -273,7 +317,7 @@ const styles = StyleSheet.create({
         width: 42,
         height: 42,
         borderRadius: 21,
-        backgroundColor: "#fff",
+        backgroundColor: "#FFFFFF",
         justifyContent: "center",
         alignItems: "center",
         zIndex: 10,
@@ -282,5 +326,6 @@ const styles = StyleSheet.create({
     closeButtonText: {
         fontSize: 20,
         fontWeight: "bold",
+        color: "#1E293B",
     },
 });
