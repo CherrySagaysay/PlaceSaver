@@ -7,7 +7,9 @@ import { samplePlaces } from "../data/samplePlaces";
 type PlaceContextType = {
   places: Place[];
   addPlace: (place: Place) => void;
+  updatePlace: (updatedPlace: Place) => void;
   deletePlace: (id: string) => void;
+
 };
 
 const PlaceContext = createContext<PlaceContextType | undefined>(undefined);
@@ -21,6 +23,14 @@ export function PlaceProvider({ children }: { children: ReactNode }) {
     ); //nag gamit ug spread operator para ma add ang bag-ong place sa existing list sa places
   };
 
+  const updatePlace = (updatedPlace: Place) => {
+    setPlaces((currentPlaces) =>
+      currentPlaces.map((place) =>
+        place.id === updatedPlace.id ? updatedPlace : place
+      )
+    );
+  };
+
   const deletePlace = (id: string) => {
     setPlaces((currentPlaces) =>
       currentPlaces.filter((place) => place.id !== id)
@@ -28,7 +38,7 @@ export function PlaceProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <PlaceContext.Provider value={{ places, addPlace, deletePlace }}>
+    <PlaceContext.Provider value={{ places, addPlace, updatePlace, deletePlace }}>
       {children}
     </PlaceContext.Provider>
   );

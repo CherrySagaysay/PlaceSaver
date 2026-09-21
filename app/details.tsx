@@ -30,6 +30,15 @@ export default function DetailsScreen() {
                 <Text>Place not found.</Text>
             )}
 
+            <Button
+                title="Edit Place"
+                onPress={() =>
+                    router.push({
+                        pathname: "/edit",
+                        params: { id: place.id },
+                    })
+                }
+            />
             <Button title="Delete Place" onPress={handleDelete} />
             <Button title="Back to Home" onPress={() => router.replace("/")} />
         </View>
