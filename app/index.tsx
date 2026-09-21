@@ -1,4 +1,5 @@
-import { Pressable, View, Text, StyleSheet, FlatList, Image, Button, TextInput } from "react-native";
+import { Pressable, Text, StyleSheet, FlatList, Image, TextInput } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -21,41 +22,48 @@ export default function HomeScreen() {
   });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Place Saver</Text>
-      <Text style={styles.subtitle}>
-        Save and manage your favorite places.
-      </Text>
-
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search places..."
-        value={search}
-        onChangeText={setSearch}
-      />
-
-      <Text style={styles.totalText}>
-        Total places: {places.length}
-      </Text>
-
-      <Pressable
-        style={styles.primaryButton}
-        onPress={() => router.push("/add")}
-      >
-        <Text style={styles.buttonText}>Add New Place</Text>
-      </Pressable>
-
-      <Pressable
-        style={styles.secondaryButton}
-        onPress={() => router.push("/categories")}
-      >
-        <Text style={styles.secondaryButtonText}>View Categories</Text>
-      </Pressable>
-
-      <FlatList //FlatList component gi gamit para ma display ang list sa places gikan sa context
-        style={{ width: "100%", marginTop: 20 }}
+    <SafeAreaView style={styles.safeArea}>
+      <FlatList
+        style={styles.list}
+        contentContainerStyle={styles.content}
         data={filteredPlaces}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={
+          <>
+            <Text style={styles.title}>Place Saver</Text>
+
+            <Text style={styles.subtitle}>
+              Save and manage your favorite places.
+            </Text>
+
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search places..."
+              value={search}
+              onChangeText={setSearch}
+            />
+
+            <Text style={styles.totalText}>
+              Total places: {places.length}
+            </Text>
+
+            <Pressable
+              style={styles.primaryButton}
+              onPress={() => router.push("/add")}
+            >
+              <Text style={styles.buttonText}>Add New Place</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.secondaryButton}
+              onPress={() => router.push("/categories")}
+            >
+              <Text style={styles.secondaryButtonText}>
+                View Categories
+              </Text>
+            </Pressable>
+          </>
+        }
         renderItem={({ item }) => (
           <Pressable
             style={styles.placeItem}
@@ -78,48 +86,40 @@ export default function HomeScreen() {
             <Text>{item.category}</Text>
           </Pressable>
         )}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>
+            No places found.
+          </Text>
+        }
       />
-
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    padding: 20,
   },
+
+  list: {
+    width: "100%",
+  },
+
+  content: {
+    padding: 20,
+    paddingBottom: 30,
+  },
+
   title: {
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 6,
   },
+
   subtitle: {
     fontSize: 16,
     marginBottom: 15,
     textAlign: "center",
-  },
-
-  placeItem: {
-    width: "100%",
-    padding: 15,
-    marginTop: 10,
-    borderWidth: 1,
-    borderRadius: 12,
-    backgroundColor: "#fff",
-  },
-
-  placeName: {
-    fontSize: 19,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-
-  placeImage: {
-    width: "100%",
-    height: 180,
-    borderRadius: 12,
-    marginBottom: 12,
   },
 
   searchInput: {
@@ -172,4 +172,31 @@ const styles = StyleSheet.create({
     color: "#2563eb",
   },
 
+  placeItem: {
+    width: "100%",
+    padding: 15,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 12,
+    backgroundColor: "#fff",
+  },
+
+  placeName: {
+    fontSize: 19,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+
+  placeImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+
+  emptyText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
 });

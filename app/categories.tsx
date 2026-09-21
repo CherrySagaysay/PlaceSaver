@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable, } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView, } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CATEGORIES } from "../constants/categories";
 import { useState } from "react";
 import { usePlaces } from "../context/PlaceContext";
@@ -11,77 +12,95 @@ export default function CategoriesScreen() {
     );
 
     const filteredPlaces = selectedCategory
-        ? places.filter((place) => place.category === selectedCategory)
+        ? places.filter(
+            (place) => place.category === selectedCategory,
+        )
         : [];
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Categories</Text>
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView
+                contentContainerStyle={styles.container}
+            >
+                <Text style={styles.title}>Categories</Text>
 
-            <Text style={styles.subtitle}>
-                Choose a category to view your saved places.
-            </Text>
+                <Text style={styles.subtitle}>
+                    Choose a category to view your saved places.
+                </Text>
 
-            {CATEGORIES.map((category) => (
-                <Pressable
-                    key={category}
-                    style={[
-                        styles.categoryButton,
-                        selectedCategory === category &&
-                        styles.selectedCategoryButton,
-                    ]}
-                    onPress={() => setSelectedCategory(category)}
-                >
-                    <Text
+                {CATEGORIES.map((category) => (
+                    <Pressable
+                        key={category}
                         style={[
-                            styles.categoryButtonText,
+                            styles.categoryButton,
                             selectedCategory === category &&
-                            styles.selectedCategoryButtonText,
+                            styles.selectedCategoryButton,
                         ]}
+                        onPress={() =>
+                            setSelectedCategory(category)
+                        }
                     >
-                        {category}
-                    </Text>
-                </Pressable>
-            ))}
+                        <Text
+                            style={[
+                                styles.categoryButtonText,
+                                selectedCategory === category &&
+                                styles.selectedCategoryButtonText,
+                            ]}
+                        >
+                            {category}
+                        </Text>
+                    </Pressable>
+                ))}
 
-            {selectedCategory && (
-                <View style={styles.results}>
-                    <Text style={styles.resultTitle}>
-                        {selectedCategory} Places
-                    </Text>
+                {selectedCategory && (
+                    <View style={styles.results}>
+                        <Text style={styles.resultTitle}>
+                            {selectedCategory} Places
+                        </Text>
 
-                    {filteredPlaces.length === 0 ? (
-                        <Text>No places saved in this category.</Text>
-                    ) : (
-                        filteredPlaces.map((place) => (
-                            <View
-                                key={place.id}
-                                style={styles.placeItem}
-                            >
-                                <Text style={styles.placeName}>
-                                    {place.name}
-                                </Text>
+                        {filteredPlaces.length === 0 ? (
+                            <Text style={styles.emptyText}>
+                                No places saved in this category.
+                            </Text>
+                        ) : (
+                            filteredPlaces.map((place) => (
+                                <View
+                                    key={place.id}
+                                    style={styles.placeItem}
+                                >
+                                    <Text style={styles.placeName}>
+                                        {place.name}
+                                    </Text>
 
-                                <Text style={styles.placeAddress}>
-                                    {place.address}
-                                </Text>
+                                    <Text
+                                        style={styles.placeAddress}
+                                    >
+                                        {place.address}
+                                    </Text>
 
-                                <Text style={styles.placeCategory}>
-                                    {place.category}
-                                </Text>
-                            </View>
-                        ))
-                    )}
-                </View>
-            )}
-        </View>
+                                    <Text
+                                        style={styles.placeCategory}
+                                    >
+                                        {place.category}
+                                    </Text>
+                                </View>
+                            ))
+                        )}
+                    </View>
+                )}
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
+    },
+
+    container: {
         padding: 20,
+        paddingBottom: 30,
     },
 
     title: {
@@ -152,5 +171,10 @@ const styles = StyleSheet.create({
     placeCategory: {
         fontSize: 14,
         fontWeight: "600",
+    },
+
+    emptyText: {
+        fontSize: 15,
+        marginTop: 5,
     },
 });

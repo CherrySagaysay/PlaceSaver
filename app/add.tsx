@@ -1,4 +1,5 @@
-import { View, Text, TextInput, StyleSheet, Pressable, Image, Modal } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Image, Modal, ScrollView, } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { CATEGORIES } from "../constants/categories";
@@ -7,7 +8,6 @@ import { usePlaces } from "../context/PlaceContext";
 import * as ImagePicker from "expo-image-picker";
 
 export default function AddPlaceScreen() {
-
     const router = useRouter();
     const { addPlace } = usePlaces();
 
@@ -44,7 +44,7 @@ export default function AddPlaceScreen() {
             address,
             category,
             notes,
-            image, // Include the image property when saving the new place
+            image,
         };
 
         addPlace(newPlace);
@@ -52,95 +52,137 @@ export default function AddPlaceScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Add New Place</Text>
-
-            <Text style={styles.subtitle}>
-                Save a place you want to remember.
-            </Text>
-
-            <Text style={styles.label}>Place Name</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter place name"
-                value={name}
-                onChangeText={setName}
-            />
-
-            <Text style={styles.label}>Address</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter address or location"
-                value={address}
-                onChangeText={setAddress}
-            />
-
-            <Text style={styles.label}>Category</Text>
-
-            <Picker
-                selectedValue={category}
-                onValueChange={(value) => setCategory(value)}
-                style={styles.picker}
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView
+                contentContainerStyle={styles.container}
+                keyboardShouldPersistTaps="handled"
             >
-                {CATEGORIES.map((item) => (
-                    <Picker.Item key={item} label={item} value={item} />
-                ))}
-            </Picker>
+                <Text style={styles.title}>Add New Place</Text>
 
-            <Pressable style={styles.photoButton} onPress={pickImage}>
-                <Text style={styles.photoButtonText}>Choose Photo</Text>
-            </Pressable>
+                <Text style={styles.subtitle}>
+                    Save a place you want to remember.
+                </Text>
 
-            {image && (
-                <Pressable onPress={() => setShowImage(true)}>
-                    <Image
-                        source={{ uri: image }}
-                        style={styles.previewImage}
-                    />
+                <Text style={styles.label}>Place Name</Text>
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter place name"
+                    value={name}
+                    onChangeText={setName}
+                />
+
+                <Text style={styles.label}>Address</Text>
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter address or location"
+                    value={address}
+                    onChangeText={setAddress}
+                />
+
+                <Text style={styles.label}>Category</Text>
+
+                <Picker
+                    selectedValue={category}
+                    onValueChange={(value) => setCategory(value)}
+                    style={styles.picker}
+                >
+                    {CATEGORIES.map((item) => (
+                        <Picker.Item
+                            key={item}
+                            label={item}
+                            value={item}
+                        />
+                    ))}
+                </Picker>
+
+                <Pressable
+                    style={styles.photoButton}
+                    onPress={pickImage}
+                >
+                    <Text style={styles.photoButtonText}>
+                        Choose Photo
+                    </Text>
                 </Pressable>
-            )}
 
-            <Modal visible={showImage} transparent animationType="fade">
-                <View style={styles.imageModal}>
-                    {image && (
-                        <Pressable onPress={() => setShowImage(false)}>
+                {image && (
+                    <Pressable
+                        onPress={() => setShowImage(true)}
+                    >
+                        <Image
+                            source={{ uri: image }}
+                            style={styles.previewImage}
+                        />
+                    </Pressable>
+                )}
+
+                <Modal
+                    visible={showImage}
+                    transparent
+                    animationType="fade"
+                >
+                    <View style={styles.imageModal}>
+                        <Pressable
+                            style={styles.closeButton}
+                            onPress={() => setShowImage(false)}
+                        >
+                            <Text style={styles.closeButtonText}>
+                                X
+                            </Text>
+                        </Pressable>
+
+                        {image && (
                             <Image
                                 source={{ uri: image }}
                                 style={styles.fullImage}
                             />
-                        </Pressable>
-                    )}
-                </View>
-            </Modal>
+                        )}
+                    </View>
+                </Modal>
 
+                <Text style={styles.label}>Notes</Text>
 
-            <Text style={styles.label}>Notes</Text>
-            <TextInput
-                style={[styles.input, styles.notesInput]}
-                placeholder="Add some notes about this place..."
-                value={notes}
-                onChangeText={setNotes}
-                multiline
-            />
+                <TextInput
+                    style={[styles.input, styles.notesInput]}
+                    placeholder="Add some notes about this place..."
+                    value={notes}
+                    onChangeText={setNotes}
+                    multiline
+                />
 
-            <Pressable style={styles.saveButton} onPress={handleSave}>
-                <Text style={styles.saveButtonText}>Save Place</Text>
-            </Pressable>
-
-        </View>
+                <Pressable
+                    style={styles.saveButton}
+                    onPress={handleSave}
+                >
+                    <Text style={styles.saveButtonText}>
+                        Save Place
+                    </Text>
+                </Pressable>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
+    },
+
+    container: {
         padding: 20,
+        paddingBottom: 30,
     },
 
     title: {
         fontSize: 28,
         fontWeight: "bold",
-        marginBottom: 25,
+        marginBottom: 8,
+    },
+
+    subtitle: {
+        fontSize: 15,
+        marginBottom: 20,
     },
 
     label: {
@@ -172,19 +214,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
 
-    previewImage: {
-        width: "100%",
-        height: 200,
-        borderRadius: 12,
-        marginTop: 10,
-        marginBottom: 18,
-    },
-
-    subtitle: {
-        fontSize: 15,
-        marginBottom: 20,
-    },
-
     photoButton: {
         width: "100%",
         paddingVertical: 14,
@@ -199,6 +228,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "#2563eb",
+    },
+
+    previewImage: {
+        width: "100%",
+        height: 200,
+        borderRadius: 12,
+        marginTop: 10,
+        marginBottom: 18,
     },
 
     saveButton: {
@@ -229,4 +266,21 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
 
+    closeButton: {
+        position: "absolute",
+        top: 50,
+        right: 20,
+        width: 42,
+        height: 42,
+        borderRadius: 21,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 10,
+    },
+
+    closeButtonText: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
 });

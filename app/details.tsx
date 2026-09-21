@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable, Image, Modal, Button } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, Modal, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { usePlaces } from "../context/PlaceContext";
@@ -7,9 +8,11 @@ export default function DetailsScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
     const { places, deletePlace } = usePlaces();
+
     const [showImage, setShowImage] = useState(false);
 
     const place = places.find((item) => item.id === id);
+
     const handleDelete = () => {
         if (place) {
             deletePlace(place.id);
@@ -18,110 +21,163 @@ export default function DetailsScreen() {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView
+                contentContainerStyle={styles.container}
+            >
+                {place?.image && (
+                    <Pressable
+                        onPress={() => setShowImage(true)}
+                    >
+                        <Image
+                            source={{ uri: place.image }}
+                            style={styles.placeImage}
+                        />
+                    </Pressable>
+                )}
 
-            {place?.image && (
-                <Pressable onPress={() => setShowImage(true)}>
-                    <Image
-                        source={{ uri: place.image }}
-                        style={styles.placeImage}
-                    />
-                </Pressable>
-            )}
+                <Modal
+                    visible={showImage}
+                    transparent
+                    animationType="fade"
+                >
+                    <View style={styles.imageModal}>
+                        <Pressable
+                            style={styles.closeButton}
+                            onPress={() => setShowImage(false)}
+                        >
+                            <Text style={styles.closeButtonText}>
+                                X
+                            </Text>
+                        </Pressable>
 
-            <Modal visible={showImage} transparent animationType="fade">
-                <View style={styles.imageModal}>
-                    {place?.image && (
-                        <Pressable onPress={() => setShowImage(false)}>
+                        {place?.image && (
                             <Image
                                 source={{ uri: place.image }}
                                 style={styles.fullImage}
                             />
+                        )}
+                    </View>
+                </Modal>
+
+                <Text style={styles.title}>Place Details</Text>
+
+                {place ? (
+                    <>
+                        <Text style={styles.name}>
+                            {place.name}
+                        </Text>
+
+                        <Text style={styles.infoLabel}>
+                            Address
+                        </Text>
+
+                        <Text style={styles.infoText}>
+                            {place.address}
+                        </Text>
+
+                        <Text style={styles.infoLabel}>
+                            Category
+                        </Text>
+
+                        <Text style={styles.infoText}>
+                            {place.category}
+                        </Text>
+
+                        <Text style={styles.infoLabel}>
+                            Notes
+                        </Text>
+
+                        <Text style={styles.infoText}>
+                            {place.notes || "No notes added."}
+                        </Text>
+                    </>
+                ) : (
+                    <Text>Place not found.</Text>
+                )}
+
+                {place && (
+                    <>
+                        <Pressable
+                            style={styles.editButton}
+                            onPress={() =>
+                                router.push({
+                                    pathname: "/edit",
+                                    params: {
+                                        id: String(id),
+                                    },
+                                })
+                            }
+                        >
+                            <Text style={styles.editButtonText}>
+                                Edit Place
+                            </Text>
                         </Pressable>
-                    )}
-                </View>
-            </Modal>
 
-            <Text style={styles.title}>Place Details</Text>
+                        <Pressable
+                            style={styles.deleteButton}
+                            onPress={handleDelete}
+                        >
+                            <Text style={styles.deleteButtonText}>
+                                Delete Place
+                            </Text>
+                        </Pressable>
 
-            {place ? (
-                <>
-                    <Text style={styles.name}>{place.name}</Text>
-                    <Text>Address: {place.address}</Text>
-                    <Text>Category: {place.category}</Text>
-                    <Text>Notes: {place.notes}</Text>
-                </>
-            ) : (
-                <Text>Place not found.</Text>
-            )}
-
-            <Pressable
-                style={styles.editButton}
-                onPress={() =>
-                    router.push({
-                        pathname: "/edit",
-                        params: { id: String(id) },
-                    })
-                }
-            >
-                <Text style={styles.editButtonText}>Edit Place</Text>
-            </Pressable>
-
-            <Pressable
-                style={styles.deleteButton}
-                onPress={handleDelete}
-            >
-                <Text style={styles.deleteButtonText}>Delete Place</Text>
-            </Pressable>
-
-            <Pressable
-                style={styles.backButton}
-                onPress={() => router.replace("/")}
-            >
-                <Text style={styles.backButtonText}>Back to Home</Text>
-            </Pressable>
-        </View>
+                        <Pressable
+                            style={styles.backButton}
+                            onPress={() =>
+                                router.replace("/")
+                            }
+                        >
+                            <Text style={styles.backButtonText}>
+                                Back to Home
+                            </Text>
+                        </Pressable>
+                    </>
+                )}
+            </ScrollView>
+        </SafeAreaView>
     );
-
-
 }
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
+    },
+
+    container: {
         padding: 20,
-    },
-
-    title: {
-        fontSize: 28,
-        fontWeight: "bold",
-        marginBottom: 25,
-    },
-
-    name: {
-        fontSize: 22,
-        fontWeight: "bold",
-        marginBottom: 10,
+        paddingBottom: 30,
     },
 
     placeImage: {
         width: "100%",
         height: 200,
-        borderRadius: 10,
-        marginBottom: 15,
+        borderRadius: 12,
+        marginBottom: 20,
     },
 
-    imageModal: {
-        flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
-        justifyContent: "center",
-        alignItems: "center",
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginBottom: 20,
     },
 
-    fullImage: {
-        width: 350,
-        height: 350,
-        resizeMode: "contain",
+    name: {
+        fontSize: 22,
+        fontWeight: "bold",
+        marginBottom: 20,
+    },
+
+    infoLabel: {
+        fontSize: 15,
+        fontWeight: "bold",
+        marginBottom: 4,
+    },
+
+    infoText: {
+        fontSize: 16,
+        marginBottom: 18,
     },
 
     editButton: {
@@ -130,7 +186,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: "#2563eb",
         alignItems: "center",
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 10,
     },
 
@@ -171,4 +227,34 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
+    imageModal: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    fullImage: {
+        width: 350,
+        height: 350,
+        resizeMode: "contain",
+    },
+
+    closeButton: {
+        position: "absolute",
+        top: 50,
+        right: 20,
+        width: 42,
+        height: 42,
+        borderRadius: 21,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 10,
+    },
+
+    closeButtonText: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
 });
