@@ -1,11 +1,24 @@
-import { Pressable, View, Text, StyleSheet, FlatList, Image, Button, } from "react-native";
+import { Pressable, View, Text, StyleSheet, FlatList, Image, Button, TextInput } from "react-native";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 
 
 export default function HomeScreen() {
   const { places } = usePlaces();
   const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  const filteredPlaces = places.filter((place) => {
+    const searchText = search.toLowerCase();
+
+    return (
+      place.name.toLowerCase().includes(searchText) ||
+      place.address.toLowerCase().includes(searchText) ||
+      place.category.toLowerCase().includes(searchText) ||
+      place.notes.toLowerCase().includes(searchText)
+    );
+  });
 
   return (
     <View style={styles.container}>
@@ -13,6 +26,13 @@ export default function HomeScreen() {
       <Text style={styles.subtitle}>
         Save and manage your favorite places.
       </Text>
+
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search places..."
+        value={search}
+        onChangeText={setSearch}
+      />
 
       <Text>Total places: {places.length}</Text>
 
@@ -28,7 +48,7 @@ export default function HomeScreen() {
 
       <FlatList //FlatList component gi gamit para ma display ang list sa places gikan sa context
         style={{ width: "100%", marginTop: 20 }}
-        data={places}
+        data={filteredPlaces}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Pressable
@@ -93,6 +113,16 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 10,
     marginBottom: 10,
+  },
+
+  searchInput: {
+    width: "100%",
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 15,
+    marginBottom: 10,
+    fontSize: 16,
   },
 
 });
