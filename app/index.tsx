@@ -21,6 +21,11 @@ export default function HomeScreen() {
         onPress={() => router.push("/add")}
       />
 
+      <Button
+        title="View Categories"
+        onPress={() => router.push("/categories")}
+      />
+
       <FlatList //FlatList component gi gamit para ma display ang list sa places gikan sa context
         style={{ width: "100%", marginTop: 20 }}
         data={places}

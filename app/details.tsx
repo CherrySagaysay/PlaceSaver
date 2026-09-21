@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { usePlaces } from "../context/PlaceContext";
 
@@ -17,6 +17,14 @@ export default function DetailsScreen() {
 
     return (
         <View style={styles.container}>
+
+            {place?.image && (
+                <Image
+                    source={{ uri: place.image }}
+                    style={styles.placeImage}
+                />
+            )}
+
             <Text style={styles.title}>Place Details</Text>
 
             {place ? (
@@ -64,4 +72,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 10,
     },
+
+    placeImage: {
+        width: "100%",
+        height: 200,
+        borderRadius: 10,
+        marginBottom: 15,
+    },
+
 });
