@@ -35,7 +35,7 @@ export default function DetailsScreen() {
                 onPress={() =>
                     router.push({
                         pathname: "/edit",
-                        params: { id: place.id },
+                        params: { id: String(id) },
                     })
                 }
             />

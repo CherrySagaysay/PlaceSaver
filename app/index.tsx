@@ -1,4 +1,4 @@
-import { Pressable, View, Text, StyleSheet, FlatList } from "react-native";
+import { Pressable, View, Text, StyleSheet, FlatList, Image, Button, } from "react-native";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
 
@@ -16,6 +16,11 @@ export default function HomeScreen() {
 
       <Text>Total places: {places.length}</Text>
 
+      <Button
+        title="Add New Place"
+        onPress={() => router.push("/add")}
+      />
+
       <FlatList //FlatList component gi gamit para ma display ang list sa places gikan sa context
         style={{ width: "100%", marginTop: 20 }}
         data={places}
@@ -30,6 +35,13 @@ export default function HomeScreen() {
               })
             }
           >
+            {item.image && (
+              <Image
+                source={{ uri: item.image }}
+                style={styles.placeImage}
+              />
+            )}
+
             <Text style={styles.placeName}>{item.name}</Text>
             <Text>{item.address}</Text>
             <Text>{item.category}</Text>
@@ -69,6 +81,13 @@ const styles = StyleSheet.create({
   placeName: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+
+  placeImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 10,
+    marginBottom: 10,
   },
 
 });

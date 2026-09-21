@@ -1,8 +1,9 @@
 //nag create ug PlaceContext.tsx nga file sa sulod sa context folder
 //
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Place } from "../types/place";
 import { samplePlaces } from "../data/samplePlaces";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type PlaceContextType = {
   places: Place[];
@@ -15,7 +16,27 @@ type PlaceContextType = {
 const PlaceContext = createContext<PlaceContextType | undefined>(undefined);
 
 export function PlaceProvider({ children }: { children: ReactNode }) {
-  const [places, setPlaces] = useState<Place[]>(samplePlaces);
+  const [places, setPlaces] = useState<Place[]>([]);
+
+  useEffect(() => {
+    const loadPlaces = async () => {
+      const savedPlaces = await AsyncStorage.getItem("places");
+
+      if (savedPlaces) {
+        setPlaces(JSON.parse(savedPlaces));
+      } else {
+        setPlaces(samplePlaces);
+      }
+    };
+
+    loadPlaces();
+  }, []);
+
+  useEffect(() => {
+    if (places.length > 0) {
+      AsyncStorage.setItem("places", JSON.stringify(places));
+    }
+  }, [places]);
 
   const addPlace = (place: Place) => {
     setPlaces((currentPlaces) =>
