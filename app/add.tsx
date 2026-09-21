@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button, Image } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Image, Modal } from "react-native";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { CATEGORIES } from "../constants/categories";
@@ -16,6 +16,7 @@ export default function AddPlaceScreen() {
     const [notes, setNotes] = useState("");
     const [category, setCategory] = useState(CATEGORIES[0]);
     const [image, setImage] = useState<string | undefined>();
+    const [showImage, setShowImage] = useState(false);
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -54,6 +55,10 @@ export default function AddPlaceScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>Add New Place</Text>
 
+            <Text style={styles.subtitle}>
+                Save a place you want to remember.
+            </Text>
+
             <Text style={styles.label}>Place Name</Text>
             <TextInput
                 style={styles.input}
@@ -82,26 +87,45 @@ export default function AddPlaceScreen() {
                 ))}
             </Picker>
 
-            <Button title="Choose Photo" onPress={pickImage} />
+            <Pressable style={styles.photoButton} onPress={pickImage}>
+                <Text style={styles.photoButtonText}>Choose Photo</Text>
+            </Pressable>
 
             {image && (
-                <Image
-                    source={{ uri: image }}
-                    style={styles.previewImage}
-                />
+                <Pressable onPress={() => setShowImage(true)}>
+                    <Image
+                        source={{ uri: image }}
+                        style={styles.previewImage}
+                    />
+                </Pressable>
             )}
+
+            <Modal visible={showImage} transparent animationType="fade">
+                <View style={styles.imageModal}>
+                    {image && (
+                        <Pressable onPress={() => setShowImage(false)}>
+                            <Image
+                                source={{ uri: image }}
+                                style={styles.fullImage}
+                            />
+                        </Pressable>
+                    )}
+                </View>
+            </Modal>
+
 
             <Text style={styles.label}>Notes</Text>
             <TextInput
                 style={[styles.input, styles.notesInput]}
-                placeholder="Optional notes"
+                placeholder="Add some notes about this place..."
                 value={notes}
                 onChangeText={setNotes}
                 multiline
             />
 
-            <Button title="Save Place" onPress={handleSave} />
-
+            <Pressable style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.saveButtonText}>Save Place</Text>
+            </Pressable>
 
         </View>
     );
@@ -126,11 +150,14 @@ const styles = StyleSheet.create({
     },
 
     input: {
+        width: "100%",
         borderWidth: 1,
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 18,
+        borderRadius: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        marginBottom: 15,
         fontSize: 16,
+        backgroundColor: "#fff",
     },
 
     notesInput: {
@@ -140,16 +167,66 @@ const styles = StyleSheet.create({
 
     picker: {
         borderWidth: 1,
+        borderRadius: 12,
         marginBottom: 18,
+        backgroundColor: "#fff",
     },
 
     previewImage: {
         width: "100%",
         height: 200,
-        borderRadius: 10,
+        borderRadius: 12,
         marginTop: 10,
         marginBottom: 18,
     },
 
+    subtitle: {
+        fontSize: 15,
+        marginBottom: 20,
+    },
+
+    photoButton: {
+        width: "100%",
+        paddingVertical: 14,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: "#2563eb",
+        alignItems: "center",
+        marginBottom: 10,
+    },
+
+    photoButtonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#2563eb",
+    },
+
+    saveButton: {
+        width: "100%",
+        paddingVertical: 14,
+        borderRadius: 12,
+        backgroundColor: "#2563eb",
+        alignItems: "center",
+        marginTop: 5,
+    },
+
+    saveButtonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+
+    imageModal: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    fullImage: {
+        width: 350,
+        height: 350,
+        resizeMode: "contain",
+    },
 
 });

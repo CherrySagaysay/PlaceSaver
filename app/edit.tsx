@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -41,6 +41,10 @@ export default function EditPlaceScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>Edit Place</Text>
 
+            <Text style={styles.subtitle}>
+                Update the information about this place.
+            </Text>
+
             {place ? (
                 <>
                     <Text style={styles.label}>Place Name</Text>
@@ -58,12 +62,18 @@ export default function EditPlaceScreen() {
                     />
 
                     <Text style={styles.label}>Category</Text>
+
                     <Picker
                         selectedValue={category}
                         onValueChange={(value) => setCategory(value)}
+                        style={styles.picker}
                     >
                         {CATEGORIES.map((item) => (
-                            <Picker.Item key={item} label={item} value={item} />
+                            <Picker.Item
+                                key={item}
+                                label={item}
+                                value={item}
+                            />
                         ))}
                     </Picker>
 
@@ -74,7 +84,24 @@ export default function EditPlaceScreen() {
                         onChangeText={setNotes}
                         multiline
                     />
-                    <Button title="Save Changes" onPress={handleUpdate} />
+                    <Pressable
+                        style={styles.saveButton}
+                        onPress={handleUpdate}
+                    >
+                        <Text style={styles.saveButtonText}>Save Changes</Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={styles.backButton}
+                        onPress={() =>
+                            router.replace({
+                                pathname: "/details",
+                                params: { id: String(id) },
+                            })
+                        }
+                    >
+                        <Text style={styles.backButtonText}>Back to Details</Text>
+                    </Pressable>
                 </>
             ) : (
                 <Text>Place not found.</Text>
@@ -96,6 +123,11 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
 
+    subtitle: {
+        fontSize: 15,
+        marginBottom: 20,
+    },
+
     label: {
         fontSize: 16,
         fontWeight: "600",
@@ -103,15 +135,56 @@ const styles = StyleSheet.create({
     },
 
     input: {
+        width: "100%",
         borderWidth: 1,
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 18,
+        borderRadius: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        marginBottom: 15,
         fontSize: 16,
+        backgroundColor: "#fff",
     },
 
     notesInput: {
         height: 100,
         textAlignVertical: "top",
+    },
+
+    picker: {
+        borderWidth: 1,
+        borderRadius: 12,
+        marginBottom: 18,
+        backgroundColor: "#fff",
+    },
+
+    saveButton: {
+        width: "100%",
+        paddingVertical: 14,
+        borderRadius: 12,
+        backgroundColor: "#2563eb",
+        alignItems: "center",
+        marginTop: 5,
+    },
+
+    saveButtonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+
+    backButton: {
+        width: "100%",
+        paddingVertical: 14,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: "#6b7280",
+        alignItems: "center",
+        marginTop: 10,
+    },
+
+    backButtonText: {
+        color: "#374151",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });

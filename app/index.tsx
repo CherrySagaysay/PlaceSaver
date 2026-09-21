@@ -34,17 +34,23 @@ export default function HomeScreen() {
         onChangeText={setSearch}
       />
 
-      <Text>Total places: {places.length}</Text>
+      <Text style={styles.totalText}>
+        Total places: {places.length}
+      </Text>
 
-      <Button
-        title="Add New Place"
+      <Pressable
+        style={styles.primaryButton}
         onPress={() => router.push("/add")}
-      />
+      >
+        <Text style={styles.buttonText}>Add New Place</Text>
+      </Pressable>
 
-      <Button
-        title="View Categories"
+      <Pressable
+        style={styles.secondaryButton}
         onPress={() => router.push("/categories")}
-      />
+      >
+        <Text style={styles.secondaryButtonText}>View Categories</Text>
+      </Pressable>
 
       <FlatList //FlatList component gi gamit para ma display ang list sa places gikan sa context
         style={{ width: "100%", marginTop: 20 }}
@@ -81,17 +87,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
+    marginBottom: 6,
   },
   subtitle: {
     fontSize: 16,
-    marginTop: 8,
+    marginBottom: 15,
     textAlign: "center",
   },
 
@@ -100,29 +105,71 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 10,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
+    backgroundColor: "#fff",
   },
 
   placeName: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: "bold",
+    marginBottom: 5,
   },
 
   placeImage: {
     width: "100%",
     height: 180,
-    borderRadius: 10,
-    marginBottom: 10,
+    borderRadius: 12,
+    marginBottom: 12,
   },
 
   searchInput: {
     width: "100%",
     borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-    marginTop: 15,
-    marginBottom: 10,
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginTop: 10,
+    marginBottom: 15,
     fontSize: 16,
+    backgroundColor: "#fff",
+  },
+
+  totalText: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 5,
+  },
+
+  primaryButton: {
+    width: "100%",
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: "#2563eb",
+    alignItems: "center",
+    marginTop: 5,
+    marginBottom: 10,
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  secondaryButton: {
+    width: "100%",
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#2563eb",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#2563eb",
   },
 
 });
