@@ -6,7 +6,6 @@ import { CATEGORIES } from "../constants/categories";
 import { useRouter } from "expo-router";
 import { usePlaces } from "../context/PlaceContext";
 import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator";
 
 export default function AddPlaceScreen() {
     const router = useRouter();
@@ -25,28 +24,18 @@ export default function AddPlaceScreen() {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 0.8,
+            base64: true,
         });
 
-    if (!result.canceled) {
-        const asset = result.assets[0];
+        if (!result.canceled) {
+            const asset = result.assets[0];
 
-        const optimizedImage = await ImageManipulator.manipulateAsync(
-            asset.uri,
-            [{ resize: { width: 800 } }],
-            {
-                compress: 0.6,
-                format: ImageManipulator.SaveFormat.JPEG,
-                base64: true,
+            if (asset.base64) {
+                const mimeType = asset.mimeType || "image/jpeg";
+                setImage(`data:${mimeType};base64,${asset.base64}`);
             }
-        );
-
-        if (optimizedImage.base64) {
-            setImage(
-                data:image/jpeg;base64,${optimizedImage.base64}
-            );
         }
-    }
-};
+    };
 
     const handleSave = () => {
         const newPlace = {
