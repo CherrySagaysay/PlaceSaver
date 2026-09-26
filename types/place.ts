@@ -4,4 +4,5 @@ export type Place = {
   address: string;
   category: string;
   notes: string;
+  image?: string;
 }; // Every Place object in our app should have these properties.
