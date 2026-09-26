@@ -49,17 +49,22 @@ export default function AddPlaceScreen() {
     };
 
     const handleSave = () => {
-        const newPlace = {
-            id: Date.now().toString(),
-            name,
-            address,
-            category,
-            notes,
-            image,
-        };
-
-        addPlace(newPlace);
-        router.replace({ pathname: "/" });
+      if (!name.trim() || !address.trim()) {
+        alert("Please enter the place name and address.");
+        return;
+      }
+    
+      const newPlace = {
+        id: Date.now().toString(),
+        name: name.trim(),
+        address: address.trim(),
+        category,
+        notes: notes.trim(),
+        image,
+      };
+    
+      addPlace(newPlace);
+      router.replace({ pathname: "/" });
     };
 
     return (
