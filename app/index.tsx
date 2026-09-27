@@ -1,4 +1,4 @@
-import { Pressable, Text, StyleSheet, FlatList, Image, TextInput, View } from "react-native";
+import { Pressable, Text, StyleSheet, FlatList, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
