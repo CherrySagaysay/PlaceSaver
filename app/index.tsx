@@ -77,7 +77,7 @@ export default function HomeScreen() {
           </>
         }
         renderItem={({ item }) => (
-          <Pressable
+          <PlaceCard
             style={styles.placeItem}
             onPress={() =>
               router.push({
