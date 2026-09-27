@@ -1,8 +1,9 @@
-import { Pressable, Text, StyleSheet, FlatList, Image, TextInput, View } from "react-native";
+import { Pressable, Text, StyleSheet, FlatList, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { PlaceCard } from "../components/PlaceCard";
 
 
 export default function HomeScreen() {
@@ -76,8 +77,8 @@ export default function HomeScreen() {
           </>
         }
         renderItem={({ item }) => (
-          <Pressable
-            style={styles.placeItem}
+          <PlaceCard
+            place={item}
             onPress={() =>
               router.push({
                 pathname: "/details",
