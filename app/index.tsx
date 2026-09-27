@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { PlaceCard } from "../components/PlaceCard";
+import PlaceCard from "../components/PlaceCard";
 
 
 export default function HomeScreen() {
@@ -85,23 +85,9 @@ export default function HomeScreen() {
                 params: { id: item.id },
               })
             }
-          >
-            {item.image && (
-              <Image
-                source={{ uri: item.image }}
-                style={styles.placeImage}
-              />
-            )}
-
-            <Text style={styles.placeName}>{item.name}</Text>
-
-            <Text style={styles.addressText}>{item.address}</Text>
-
-            <View style={styles.categoryBadge}>
-              <Text style={styles.categoryText}>{item.category}</Text>
-            </View>
-          </Pressable>
+          />
         )}
+
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyTitle}>No places found</Text>
