@@ -78,7 +78,7 @@ export default function HomeScreen() {
         }
         renderItem={({ item }) => (
           <PlaceCard
-            style={styles.placeItem}
+            place={item}
             onPress={() =>
               router.push({
                 pathname: "/details",
