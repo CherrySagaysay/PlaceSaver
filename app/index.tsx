@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlaces } from "../context/PlaceContext";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import {PlaceCard} from "../components/PlaceCard";
 
 
 export default function HomeScreen() {
