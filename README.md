@@ -149,6 +149,36 @@ Place Saver uses AsyncStorage for local data persistence.
 Saved place information is stored locally so that the user's saved places can remain available after the application is reloaded.
 The application currently does not use an external database or external API. Place information is managed through the application's local storage system.
 
+## Application Screens
+
+Place Saver includes several screens that allow users to save, organize, and manage their places.
+
+### Home Screen
+
+The Home Screen displays all saved places and provides a search function. Users can also view the total number of saved places and navigate to other parts of the application.
+
+### Add Place Screen
+
+The Add Place Screen allows users to add a new place by entering the place name, address, category, notes, and an optional photo.
+
+### Details Screen
+
+The Details Screen displays the complete information of a selected place, including its name, address, category, notes, and photo when available.
+
+### Edit Place Screen
+
+The Edit Place Screen allows users to update the information of an existing saved place.
+
+### Categories Screen
+
+The Categories Screen organizes saved places according to their categories, making it easier for users to find specific types of places.
+
+## Team Contributions
+
+The Place Saver project was developed collaboratively using Git and GitHub. Each team member contributed to different parts of the application, including interface development, reusable components, documentation, validation, and application features.
+
+Team contributions are managed through separate Git branches and Pull Requests to maintain an organized development workflow.
+
 
 
 
