@@ -130,6 +130,44 @@ export default function DetailsScreen() {
         )}
 
         <Modal
+          visible={showDeleteModal}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.deleteModalOverlay}>
+            <View style={styles.deleteModalCard}>
+              <Text style={styles.deleteModalTitle}>
+                Delete Place
+              </Text>
+
+              <Text style={styles.deleteModalText}>
+                Are you sure you want to delete "{place?.name}"?
+              </Text>
+
+              <View style={styles.deleteModalActions}>
+                <Pressable
+                  style={styles.cancelDeleteButton}
+                  onPress={() => setShowDeleteModal(false)}
+                >
+                  <Text style={styles.cancelDeleteText}>
+                    Cancel
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.confirmDeleteButton}
+                  onPress={confirmDelete}
+                >
+                  <Text style={styles.confirmDeleteText}>
+                    Delete
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
           visible={showImage}
           transparent
           animationType="fade"
