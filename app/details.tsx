@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, Image, Modal, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, Modal, ScrollView, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -10,14 +10,24 @@ export default function DetailsScreen() {
   const { places, deletePlace } = usePlaces();
 
   const [showImage, setShowImage] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
   const place = places.find((item) => item.id === id);
 
   const handleDelete = () => {
-    if (place) {
-      deletePlace(place.id);
-      router.replace("/");
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (!place) {
+      return;
     }
+
+    deletePlace(place.id);
+    setShowDeleteModal(false);
+    setShowDeleteSuccess(true);
   };
 
   return (
@@ -120,6 +130,76 @@ export default function DetailsScreen() {
             </Pressable>
           </View>
         )}
+
+        <Modal
+          visible={showDeleteModal}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.deleteModalOverlay}>
+            <View style={styles.deleteModalCard}>
+              <Text style={styles.deleteModalTitle}>
+                Delete Place
+              </Text>
+
+              <Text style={styles.deleteModalText}>
+                Are you sure you want to delete "{place?.name}"?
+              </Text>
+
+              <View style={styles.deleteModalActions}>
+                <Pressable
+                  style={styles.cancelDeleteButton}
+                  onPress={() => setShowDeleteModal(false)}
+                >
+                  <Text style={styles.cancelDeleteText}>
+                    Cancel
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.confirmDeleteButton}
+                  onPress={confirmDelete}
+                >
+                  <Text style={styles.confirmDeleteText}>
+                    Delete
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={showDeleteSuccess}
+          transparent
+          animationType="fade"
+        
+          <View style={styles.deleteModalOverlay}>
+            <View style={styles.deleteModalCard}>
+              <Text style={styles.successIcon}>✓</Text>
+        
+              <Text style={styles.deleteModalTitle}>
+                Place Deleted
+              </Text>
+        
+              <Text style={styles.deleteModalText}>
+                The place was successfully deleted.
+              </Text>
+        
+              <Pressable
+                style={styles.confirmDeleteButton}
+                onPress={() => {
+                  setShowDeleteSuccess(false);
+                  router.replace("/");
+                }}
+              >
+                <Text style={styles.confirmDeleteText}>
+                  OK
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
 
         <Modal
           visible={showImage}
@@ -337,4 +417,78 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1E293B",
   },
+
+  deleteModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(15, 23, 42, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+
+  deleteModalCard: {
+    width: "100%",
+    maxWidth: 400,
+    padding: 22,
+    borderRadius: 18,
+    backgroundColor: "#FFFFFF",
+  },
+
+  deleteModalTitle: {
+    fontSize: 21,
+    fontWeight: "bold",
+    color: "#1E293B",
+    marginBottom: 8,
+  },
+
+  deleteModalText: {
+    fontSize: 15,
+    color: "#64748B",
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+
+  deleteModalActions: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  cancelDeleteButton: {
+    flex: 1,
+    paddingVertical: 13,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+  },
+
+  cancelDeleteText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#475569",
+  },
+
+  confirmDeleteButton: {
+    flex: 1,
+    paddingVertical: 13,
+    borderRadius: 12,
+    backgroundColor: "#DC2626",
+    alignItems: "center",
+  },
+
+  confirmDeleteText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+
+  successIcon: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#16A34A",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+
 });
