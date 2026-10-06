@@ -17,15 +17,23 @@ const PlaceContext = createContext<PlaceContextType | undefined>(undefined);
 
 export function PlaceProvider({ children }: { children: ReactNode }) {
   const [places, setPlaces] = useState<Place[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
+   useEffect(() => {
     const loadPlaces = async () => {
-      const savedPlaces = await AsyncStorage.getItem("places");
+      try {
+        const savedPlaces = await AsyncStorage.getItem("places");
 
-      if (savedPlaces) {
-        setPlaces(JSON.parse(savedPlaces));
-      } else {
+        if (savedPlaces) {
+          setPlaces(JSON.parse(savedPlaces));
+        } else {
+          setPlaces(samplePlaces);
+        }
+      } catch (error) {
+        console.error("Failed to load places:", error);
         setPlaces(samplePlaces);
+      } finally {
+        setIsLoaded(true);
       }
     };
 
@@ -33,10 +41,23 @@ export function PlaceProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (places.length > 0) {
-      AsyncStorage.setItem("places", JSON.stringify(places));
+    if (!isLoaded) {
+      return;
     }
-  }, [places]);
+
+    const savePlaces = async () => {
+      try {
+        await AsyncStorage.setItem(
+          "places",
+          JSON.stringify(places),
+        );
+      } catch (error) {
+        console.error("Failed to save places:", error);
+      }
+    };
+
+    savePlaces();
+  }, [places, isLoaded]);
 
   const addPlace = (place: Place) => {
     setPlaces((currentPlaces) =>
