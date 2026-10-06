@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, Image, Modal, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, Modal, ScrollView, Alert, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -14,11 +14,39 @@ export default function DetailsScreen() {
   const place = places.find((item) => item.id === id);
 
   const handleDelete = () => {
-    if (place) {
-      deletePlace(place.id);
-      router.replace("/");
-    }
-  };
+  if (!place) {
+    return;
+  }
+
+  Alert.alert(
+    "Delete Place",
+    `Are you sure you want to delete "${place.name}"?`,
+    [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          deletePlace(place.id);
+
+          Alert.alert(
+            "Place Deleted",
+            `"${place.name}" was successfully deleted.`,
+            [
+              {
+                text: "OK",
+                onPress: () => router.replace("/"),
+              },
+            ]
+          );
+        },
+      },
+    ]
+  );
+};;
 
   return (
     <SafeAreaView style={styles.safeArea}>
