@@ -3,8 +3,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CATEGORIES } from "../constants/categories";
 import { useState } from "react";
 import { usePlaces } from "../context/PlaceContext";
+import { useRouter } from "expo-router";
 
 export default function CategoriesScreen() {
+  const router = useRouter();
   const { places } = usePlaces();
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -13,8 +15,8 @@ export default function CategoriesScreen() {
 
   const filteredPlaces = selectedCategory
     ? places.filter(
-        (place) => place.category === selectedCategory,
-      )
+      (place) => place.category === selectedCategory,
+    )
     : [];
 
   return (
@@ -42,7 +44,7 @@ export default function CategoriesScreen() {
                 style={[
                   styles.categoryButton,
                   selectedCategory === category &&
-                    styles.selectedCategoryButton,
+                  styles.selectedCategoryButton,
                 ]}
                 onPress={() =>
                   setSelectedCategory(category)
@@ -52,7 +54,7 @@ export default function CategoriesScreen() {
                   style={[
                     styles.categoryButtonText,
                     selectedCategory === category &&
-                      styles.selectedCategoryButtonText,
+                    styles.selectedCategoryButtonText,
                   ]}
                 >
                   {category}
@@ -80,9 +82,18 @@ export default function CategoriesScreen() {
               </View>
             ) : (
               filteredPlaces.map((place) => (
-                <View
+                <Pressable
                   key={place.id}
-                  style={styles.placeItem}
+                  style={({ pressed }) => [
+                    styles.placeItem,
+                    pressed && styles.placeItemPressed,
+                  ]}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/details",
+                      params: { id: place.id },
+                    })
+                  }
                 >
                   <Text style={styles.placeName}>
                     {place.name}
@@ -97,7 +108,7 @@ export default function CategoriesScreen() {
                       {place.category}
                     </Text>
                   </View>
-                </View>
+                </Pressable>
               ))
             )}
           </View>
@@ -253,4 +264,9 @@ const styles = StyleSheet.create({
     color: "#64748B",
     lineHeight: 20,
   },
+
+  placeItemPressed: {
+    opacity: 0.7,
+  },
+
 });
