@@ -2,7 +2,6 @@
 //
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Place } from "../types/place";
-import { samplePlaces } from "../data/samplePlaces";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type PlaceContextType = {
@@ -27,11 +26,11 @@ export function PlaceProvider({ children }: { children: ReactNode }) {
         if (savedPlaces) {
           setPlaces(JSON.parse(savedPlaces));
         } else {
-          setPlaces(samplePlaces);
+          setPlaces([]);
         }
       } catch (error) {
         console.error("Failed to load places:", error);
-        setPlaces(samplePlaces);
+        setPlaces([]);
       } finally {
         setIsLoaded(true);
       }
