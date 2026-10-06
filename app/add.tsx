@@ -18,6 +18,7 @@ export default function AddPlaceScreen() {
     const [category, setCategory] = useState(CATEGORIES[0]);
     const [image, setImage] = useState<string | undefined>();
     const [showImage, setShowImage] = useState(false);
+    const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -64,7 +65,7 @@ export default function AddPlaceScreen() {
       };
     
       addPlace(newPlace);
-      router.replace({ pathname: "/" });
+      setShowSaveSuccess(true);
     };
 
     return (
