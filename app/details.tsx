@@ -173,19 +173,19 @@ export default function DetailsScreen() {
           visible={showDeleteSuccess}
           transparent
           animationType="fade"
-        
+        >
           <View style={styles.deleteModalOverlay}>
             <View style={styles.deleteModalCard}>
               <Text style={styles.successIcon}>✓</Text>
-        
+
               <Text style={styles.deleteModalTitle}>
                 Place Deleted
               </Text>
-        
+
               <Text style={styles.deleteModalText}>
                 The place was successfully deleted.
               </Text>
-        
+
               <Pressable
                 style={styles.confirmDeleteButton}
                 onPress={() => {
