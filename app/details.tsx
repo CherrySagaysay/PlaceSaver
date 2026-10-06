@@ -18,6 +18,16 @@ export default function DetailsScreen() {
   setShowDeleteModal(true);
 };
 
+  const confirmDelete = () => {
+  if (!place) {
+    return;
+  }
+
+  deletePlace(place.id);
+  setShowDeleteModal(false);
+  router.replace("/");
+};
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
