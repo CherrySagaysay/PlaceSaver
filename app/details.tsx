@@ -345,4 +345,39 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1E293B",
   },
+
+  deleteModalOverlay: {
+  flex: 1,
+  backgroundColor: "rgba(15, 23, 42, 0.5)",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 20,
+},
+
+deleteModalCard: {
+  width: "100%",
+  maxWidth: 400,
+  padding: 22,
+  borderRadius: 18,
+  backgroundColor: "#FFFFFF",
+},
+
+deleteModalTitle: {
+  fontSize: 21,
+  fontWeight: "bold",
+  color: "#1E293B",
+  marginBottom: 8,
+},
+
+deleteModalText: {
+  fontSize: 15,
+  color: "#64748B",
+  lineHeight: 22,
+  marginBottom: 20,
+},
+
+deleteModalActions: {
+  flexDirection: "row",
+  gap: 10,
+},
 });
