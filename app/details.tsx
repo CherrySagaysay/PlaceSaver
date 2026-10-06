@@ -380,4 +380,35 @@ deleteModalActions: {
   flexDirection: "row",
   gap: 10,
 },
+
+cancelDeleteButton: {
+  flex: 1,
+  paddingVertical: 13,
+  borderRadius: 12,
+  borderWidth: 1,
+  borderColor: "#CBD5E1",
+  backgroundColor: "#FFFFFF",
+  alignItems: "center",
+},
+
+cancelDeleteText: {
+  fontSize: 15,
+  fontWeight: "bold",
+  color: "#475569",
+},
+
+confirmDeleteButton: {
+  flex: 1,
+  paddingVertical: 13,
+  borderRadius: 12,
+  backgroundColor: "#DC2626",
+  alignItems: "center",
+},
+
+confirmDeleteText: {
+  fontSize: 15,
+  fontWeight: "bold",
+  color: "#FFFFFF",
+},
+  
 });
