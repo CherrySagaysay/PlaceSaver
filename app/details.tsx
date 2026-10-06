@@ -14,19 +14,19 @@ export default function DetailsScreen() {
 
   const place = places.find((item) => item.id === id);
 
- const handleDelete = () => {
-  setShowDeleteModal(true);
-};
+  const handleDelete = () => {
+    setShowDeleteModal(true);
+  };
 
   const confirmDelete = () => {
-  if (!place) {
-    return;
-  }
+    if (!place) {
+      return;
+    }
 
-  deletePlace(place.id);
-  setShowDeleteModal(false);
-  router.replace("/");
-};
+    deletePlace(place.id);
+    setShowDeleteModal(false);
+    router.replace("/");
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -347,68 +347,68 @@ const styles = StyleSheet.create({
   },
 
   deleteModalOverlay: {
-  flex: 1,
-  backgroundColor: "rgba(15, 23, 42, 0.5)",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: 20,
-},
+    flex: 1,
+    backgroundColor: "rgba(15, 23, 42, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
 
-deleteModalCard: {
-  width: "100%",
-  maxWidth: 400,
-  padding: 22,
-  borderRadius: 18,
-  backgroundColor: "#FFFFFF",
-},
+  deleteModalCard: {
+    width: "100%",
+    maxWidth: 400,
+    padding: 22,
+    borderRadius: 18,
+    backgroundColor: "#FFFFFF",
+  },
 
-deleteModalTitle: {
-  fontSize: 21,
-  fontWeight: "bold",
-  color: "#1E293B",
-  marginBottom: 8,
-},
+  deleteModalTitle: {
+    fontSize: 21,
+    fontWeight: "bold",
+    color: "#1E293B",
+    marginBottom: 8,
+  },
 
-deleteModalText: {
-  fontSize: 15,
-  color: "#64748B",
-  lineHeight: 22,
-  marginBottom: 20,
-},
+  deleteModalText: {
+    fontSize: 15,
+    color: "#64748B",
+    lineHeight: 22,
+    marginBottom: 20,
+  },
 
-deleteModalActions: {
-  flexDirection: "row",
-  gap: 10,
-},
+  deleteModalActions: {
+    flexDirection: "row",
+    gap: 10,
+  },
 
-cancelDeleteButton: {
-  flex: 1,
-  paddingVertical: 13,
-  borderRadius: 12,
-  borderWidth: 1,
-  borderColor: "#CBD5E1",
-  backgroundColor: "#FFFFFF",
-  alignItems: "center",
-},
+  cancelDeleteButton: {
+    flex: 1,
+    paddingVertical: 13,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+  },
 
-cancelDeleteText: {
-  fontSize: 15,
-  fontWeight: "bold",
-  color: "#475569",
-},
+  cancelDeleteText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#475569",
+  },
 
-confirmDeleteButton: {
-  flex: 1,
-  paddingVertical: 13,
-  borderRadius: 12,
-  backgroundColor: "#DC2626",
-  alignItems: "center",
-},
+  confirmDeleteButton: {
+    flex: 1,
+    paddingVertical: 13,
+    borderRadius: 12,
+    backgroundColor: "#DC2626",
+    alignItems: "center",
+  },
 
-confirmDeleteText: {
-  fontSize: 15,
-  fontWeight: "bold",
-  color: "#FFFFFF",
-},
-  
+  confirmDeleteText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+
 });
