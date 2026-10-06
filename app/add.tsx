@@ -50,22 +50,22 @@ export default function AddPlaceScreen() {
     };
 
     const handleSave = () => {
-      if (!name.trim() || !address.trim()) {
-        alert("Please enter the place name and address.");
-        return;
-      }
-    
-      const newPlace = {
-        id: Date.now().toString(),
-        name: name.trim(),
-        address: address.trim(),
-        category,
-        notes: notes.trim(),
-        image,
-      };
-    
-      addPlace(newPlace);
-      setShowSaveSuccess(true);
+        if (!name.trim() || !address.trim()) {
+            alert("Please enter the place name and address.");
+            return;
+        }
+
+        const newPlace = {
+            id: Date.now().toString(),
+            name: name.trim(),
+            address: address.trim(),
+            category,
+            notes: notes.trim(),
+            image,
+        };
+
+        addPlace(newPlace);
+        setShowSaveSuccess(true);
     };
 
     return (
@@ -189,36 +189,6 @@ export default function AddPlaceScreen() {
                 </View>
             </Modal>
 
-            <Modal
-              visible={showSaveSuccess}
-              transparent
-              animationType="fade"
-            >
-              <View style={styles.successModalOverlay}>
-                <View style={styles.successModalCard}>
-                  <Text style={styles.successIcon}>✓</Text>
-            
-                  <Text style={styles.successTitle}>
-                    Place Saved Successfully!
-                  </Text>
-            
-                  <Text style={styles.successText}>
-                    Your place has been added to your collection.
-                  </Text>
-            
-                  <Pressable
-                    style={styles.successButton}
-                    onPress={() => {
-                      setShowSaveSuccess(false);
-                      router.replace("/");
-                    }}
-                  >
-                    <Text style={styles.successButtonText}>OK</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </Modal>
-            
         </SafeAreaView>
     );
 }
@@ -376,59 +346,4 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#1E293B",
     },
-
-    successModalOverlay: {
-      flex: 1,
-      backgroundColor: "rgba(15, 23, 42, 0.5)",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 20,
-    },
-    
-    successModalCard: {
-      width: "100%",
-      maxWidth: 400,
-      padding: 24,
-      borderRadius: 18,
-      backgroundColor: "#FFFFFF",
-      alignItems: "center",
-    },
-    
-    successIcon: {
-      fontSize: 42,
-      fontWeight: "bold",
-      color: "#16A34A",
-      marginBottom: 10,
-    },
-    
-    successTitle: {
-      fontSize: 21,
-      fontWeight: "bold",
-      color: "#1E293B",
-      textAlign: "center",
-      marginBottom: 8,
-    },
-    
-    successText: {
-      fontSize: 15,
-      color: "#64748B",
-      lineHeight: 22,
-      textAlign: "center",
-      marginBottom: 20,
-    },
-    
-    successButton: {
-      width: "100%",
-      paddingVertical: 13,
-      borderRadius: 12,
-      backgroundColor: "#2563EB",
-      alignItems: "center",
-    },
-    
-    successButtonText: {
-      fontSize: 15,
-      fontWeight: "bold",
-      color: "#FFFFFF",
-    },
-    
 });
