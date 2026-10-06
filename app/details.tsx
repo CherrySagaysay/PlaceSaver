@@ -14,39 +14,39 @@ export default function DetailsScreen() {
   const place = places.find((item) => item.id === id);
 
   const handleDelete = () => {
-  if (!place) {
-    return;
-  }
+    if (!place) {
+      return;
+    }
 
-  Alert.alert(
-    "Delete Place",
-    `Are you sure you want to delete "${place.name}"?`,
-    [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: () => {
-          deletePlace(place.id);
-
-          Alert.alert(
-            "Place Deleted",
-            `"${place.name}" was successfully deleted.`,
-            [
-              {
-                text: "OK",
-                onPress: () => router.replace("/"),
-              },
-            ]
-          );
+    Alert.alert(
+      "Delete Place",
+      `Are you sure you want to delete "${place.name}"?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ]
-  );
-};;
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            deletePlace(place.id);
+
+            Alert.alert(
+              "Place Deleted",
+              `"${place.name}" was successfully deleted.`,
+              [
+                {
+                  text: "OK",
+                  onPress: () => router.replace("/"),
+                },
+              ]
+            );
+          },
+        },
+      ]
+    );
+  };;
 
   return (
     <SafeAreaView style={styles.safeArea}>
