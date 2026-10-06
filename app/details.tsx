@@ -170,6 +170,38 @@ export default function DetailsScreen() {
         </Modal>
 
         <Modal
+          visible={showDeleteSuccess}
+          transparent
+          animationType="fade"
+        
+          <View style={styles.deleteModalOverlay}>
+            <View style={styles.deleteModalCard}>
+              <Text style={styles.successIcon}>✓</Text>
+        
+              <Text style={styles.deleteModalTitle}>
+                Place Deleted
+              </Text>
+        
+              <Text style={styles.deleteModalText}>
+                The place was successfully deleted.
+              </Text>
+        
+              <Pressable
+                style={styles.confirmDeleteButton}
+                onPress={() => {
+                  setShowDeleteSuccess(false);
+                  router.replace("/");
+                }}
+              >
+                <Text style={styles.confirmDeleteText}>
+                  OK
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
           visible={showImage}
           transparent
           animationType="fade"
