@@ -12,6 +12,8 @@ export default function DetailsScreen() {
   const [showImage, setShowImage] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
   const place = places.find((item) => item.id === id);
 
   const handleDelete = () => {
@@ -25,7 +27,7 @@ export default function DetailsScreen() {
 
     deletePlace(place.id);
     setShowDeleteModal(false);
-    router.replace("/");
+    setShowDeleteSuccess(true);
   };
 
   return (
