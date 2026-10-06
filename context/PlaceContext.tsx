@@ -19,7 +19,7 @@ export function PlaceProvider({ children }: { children: ReactNode }) {
   const [places, setPlaces] = useState<Place[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     const loadPlaces = async () => {
       try {
         const savedPlaces = await AsyncStorage.getItem("places");
