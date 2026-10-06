@@ -451,4 +451,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
 
+  successIcon: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#16A34A",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+
 });
